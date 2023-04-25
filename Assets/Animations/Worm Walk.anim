@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy Flying
+  m_Name: Worm Walk
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 1122742994, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
+      value: {fileID: -1909553008, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
     - time: 0.083333336
-      value: {fileID: 1278230278, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
+      value: {fileID: -712176976, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -42,8 +42,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 1122742994, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
-    - {fileID: 1278230278, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
+    - {fileID: -1909553008, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
+    - {fileID: -712176976, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
