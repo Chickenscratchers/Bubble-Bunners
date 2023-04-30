@@ -9,15 +9,19 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 jumpHeight;
 
     private bool isGrounded = false; // Plyaer is grounded if box collider
-    private Rigidbody2D rb;
+    private Rigidbody2D rigidBody;
     private Animator anim;
-    private SpriteRenderer sr;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
+    private float xLocalScale;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        xLocalScale = transform.localScale.x;
     }
 
     void Update()
@@ -29,10 +33,10 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Walk", true);
             if (inputX < 0)
             {
-                sr.flipX = true;
+                transform.localScale = new Vector2(-1 * xLocalScale, transform.localScale.y);
             } else
             {
-                sr.flipX = false;
+                transform.localScale = new Vector2(xLocalScale, transform.localScale.y);
             }
         }
         else
@@ -48,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Walk", false);
             anim.SetTrigger("Jump");
-            rb.AddForce(jumpHeight, ForceMode2D.Impulse);
+            rigidBody.AddForce(jumpHeight, ForceMode2D.Impulse);
         }
     }
 
