@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: platform_2
+  m_Name: sky
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 134057282, guid: 0bc52d46b84ee204391dcb44944cc59b, type: 3}
+  m_Sprite: {fileID: -876089360, guid: 28d5363c03b6d0842be5b10d72eee399, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
