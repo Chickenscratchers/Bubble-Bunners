@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
     private float xLocalScale;
+    private float inputX;
 
     private void Start()
     {
@@ -24,9 +25,16 @@ public class PlayerMovement : MonoBehaviour
         xLocalScale = transform.localScale.x;
     }
 
+    private void FixedUpdate()
+    {
+        Vector2 movement = new Vector2(speed.x * inputX, 0);
+        movement *= Time.deltaTime;
+        transform.Translate(movement);
+    }
+
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal");
+        inputX = Input.GetAxis("Horizontal");
         
         if (inputX != 0)
         {
@@ -43,9 +51,6 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Walk", false);
         }
-        Vector2 movement = new Vector2(speed.x * inputX, 0);
-        movement *= Time.deltaTime;
-        transform.Translate(movement);
 
         // Jump only w/ space key down + player is grounded
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
