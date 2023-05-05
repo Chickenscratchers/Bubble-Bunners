@@ -39,6 +39,7 @@ public class WormEnemy : MonoBehaviour
         transform.Translate(movement);
 
         timer += Time.deltaTime;
+
            
         // reset the timer to go back to the beginning of the animation curve
         if (timer > curveTime)

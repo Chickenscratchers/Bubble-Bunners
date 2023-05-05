@@ -12,6 +12,7 @@ public class WormEnemy : MonoBehaviour
     private float timer;
     private float currentX;
     private int moves;
+    private Vector2 speed;
     private float curveTime;
 
     private SpriteRenderer sr;
@@ -31,28 +32,25 @@ public class WormEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // determine how fast we're going based on animation curve
-        float currentHorizSpeed = movementSpeedCurve.Evaluate(timer) * direction;
+        speed.x = direction * movementSpeedCurve.Evaluate(timer);
 
-        // apply motion based on horizontal speed and animation curve
-        Vector2 movement = new Vector2(currentHorizSpeed, 0) * Time.deltaTime;
-        transform.Translate(movement);
-
+        // apply motion based on horizontal speed
+        rb.velocity = speed;
         timer += Time.deltaTime;
-           
-        // reset the timer to go back to the beginning of the animation curve
+
         if (timer > curveTime)
         {
-            timer = 0.01f;
+            timer = 0;
             moves += 1;
+            Debug.Log("Restart timer: " + movementSpeedCurve.length);
         }
 
-        // turn around after a set number of repetitions
         if (moves >= numMoves)
         {
             moves = 0;
             direction *= -1;
             sr.flipX = !sr.flipX;
+            Debug.Log("Turn around");
         }
     }
 }
