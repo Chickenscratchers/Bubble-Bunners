@@ -30,7 +30,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Worm Walk
-  m_Speed: 0.107
+  m_Speed: 0.1075
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
