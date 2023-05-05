@@ -9,46 +9,55 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 jumpHeight;
 
     private bool isGrounded = false; // Plyaer is grounded if box collider
-    private Rigidbody2D rb;
+    private Rigidbody2D rigidBody;
     private Animator anim;
-    private SpriteRenderer sr;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
+    private float xLocalScale;
+    private float inputX;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        xLocalScale = transform.localScale.x;
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 movement = new Vector2(speed.x * inputX, 0);
+        movement *= Time.deltaTime;
+        transform.Translate(movement);
     }
 
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal");
+        inputX = Input.GetAxis("Horizontal");
         
         if (inputX != 0)
         {
             anim.SetBool("Walk", true);
             if (inputX < 0)
             {
-                sr.flipX = true;
+                transform.localScale = new Vector2(-1 * xLocalScale, transform.localScale.y);
             } else
             {
-                sr.flipX = false;
+                transform.localScale = new Vector2(xLocalScale, transform.localScale.y);
             }
         }
         else
         {
             anim.SetBool("Walk", false);
         }
-        Vector2 movement = new Vector2(speed.x * inputX, 0);
-        movement *= Time.deltaTime;
-        transform.Translate(movement);
 
         // Jump only w/ space key down + player is grounded
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             anim.SetBool("Walk", false);
             anim.SetTrigger("Jump");
-            rb.AddForce(jumpHeight, ForceMode2D.Impulse);
+            rigidBody.AddForce(jumpHeight, ForceMode2D.Impulse);
         }
     }
 
