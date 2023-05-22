@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector2 speed;
     public Vector2 jumpHeight;
+    public ObjectPooler objectPooler;
+    public float bubbleCooldown;
 
     private bool isGrounded = false; // Plyaer is grounded if box collider
     private Rigidbody2D rigidBody;
@@ -15,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private float xLocalScale;
     private float inputX;
+    private int facingRight;
+    private float bubbleTimer;
 
     private void Start()
     {
@@ -23,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         xLocalScale = transform.localScale.x;
+        facingRight = 1;
+        bubbleTimer = bubbleCooldown;
     }
 
     private void FixedUpdate()
@@ -30,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 movement = new Vector2(speed.x * inputX, 0);
         movement *= Time.deltaTime;
         transform.Translate(movement);
+        bubbleTimer += Time.deltaTime;
     }
 
     void Update()
@@ -42,9 +49,11 @@ public class PlayerMovement : MonoBehaviour
             if (inputX < 0)
             {
                 transform.localScale = new Vector2(-1 * xLocalScale, transform.localScale.y);
+                facingRight = -1;
             } else
             {
                 transform.localScale = new Vector2(xLocalScale, transform.localScale.y);
+                facingRight = 1;
             }
         }
         else
@@ -58,6 +67,15 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Walk", false);
             anim.SetTrigger("Jump");
             rigidBody.AddForce(jumpHeight, ForceMode2D.Impulse);
+        }
+
+        // Shoot a bubble with C key
+        if (Input.GetKey(KeyCode.C) && bubbleTimer > bubbleCooldown)
+        {
+            // get a bubble from the pool
+            // the bubble automatically positions itself and moves
+            objectPooler.GetPooledObject("Bubble");
+            bubbleTimer = 0;
         }
     }
 
@@ -77,5 +95,10 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public int getFacingRight()
+    {
+        return facingRight;
     }
 }
