@@ -10,7 +10,13 @@ public class PlayerHealth : MonoBehaviour
     private readonly string EnemyTag = "Enemy";
     private bool invincible = false;
     [SerializeField] private float invincibilityDurationSeconds;
-    
+    private FlashBehavior flashBehavior;
+
+    void Start()
+    {
+        flashBehavior = GetComponent<FlashBehavior>();
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (!invincible) 
@@ -22,7 +28,12 @@ public class PlayerHealth : MonoBehaviour
                 {
                     Debug.Log("Player died");
                 }
+                Debug.Log("Start flash");
+                flashBehavior.Flash();
+
+                Debug.Log("Start invincible");
                 StartCoroutine(enterTemporaryInvincibility());
+                
             }
         }
     }
