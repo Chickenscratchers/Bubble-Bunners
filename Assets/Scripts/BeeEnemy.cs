@@ -9,6 +9,7 @@ public class BeeEnemy : MonoBehaviour
     public float vertSpeed;
     public float vertHeight;
     public float timeTraveled;
+    public ObjectPooler objectPooler;
 
     private float direction;
     private float timer;
@@ -42,6 +43,15 @@ public class BeeEnemy : MonoBehaviour
             timer = 0;
             direction *= -1;
             sr.flipX = !sr.flipX;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player Projectile"))
+        {
+            objectPooler.ReturnObjectToPool(collision.gameObject);
+            Destroy(gameObject);
         }
     }
 }

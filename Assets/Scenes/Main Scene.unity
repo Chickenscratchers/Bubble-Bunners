@@ -128,6 +128,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3089529870198623592, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
   m_PrefabInstance: {fileID: 784924555}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &346099482
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346099478}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.60638887}
+  serializedVersion: 2
+  m_Radius: 9.328806
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4024,6 +4040,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3089529870198623592, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
+      propertyPath: m_TagString
+      value: Player Projectile
+      objectReference: {fileID: 0}
     - target: {fileID: 3089529870198623594, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -4892,7 +4912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1909770897584539809, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5649999
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 1909770897584539809, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4926,6 +4946,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1909770897584539810, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
+      propertyPath: objectPooler
+      value: 
+      objectReference: {fileID: 538410104}
     - target: {fileID: 1909770897584539868, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
       propertyPath: m_Name
       value: Bee
@@ -4991,5 +5015,9 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4228668262371387221, guid: 3c03a28af0df74132b9e743f4098276b, type: 3}
+      propertyPath: objectPooler
+      value: 
+      objectReference: {fileID: 538410104}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c03a28af0df74132b9e743f4098276b, type: 3}
