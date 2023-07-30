@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeeEnemy : MonoBehaviour
+public class BeeEnemy : BaseEnemy
 {
 
     public float horizSpeed;
     public float vertSpeed;
     public float vertHeight;
     public float timeTraveled;
-    public ObjectPooler objectPooler;
 
     private float direction;
     private float timer;

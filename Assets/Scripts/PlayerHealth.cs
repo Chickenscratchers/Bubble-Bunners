@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (!invincible) 
         { 
-            if (collision.gameObject.tag == EnemyTag)
+            if (collision.gameObject.tag == EnemyTag && collision.gameObject.GetComponent<BaseEnemy>().isAlive)
             {
                 health--;
                 if (health <= 0)
