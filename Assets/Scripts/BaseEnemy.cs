@@ -5,16 +5,25 @@ using UnityEngine;
 public class BaseEnemy : MonoBehaviour
 {
     public bool isAlive = true;
-    public ObjectPooler objectPooler;
 
     protected Animator an;
+    protected int DeathLayer;
+    protected Rigidbody2D rb;
+
+    private void Awake()
+    {
+        an = gameObject.GetComponent<Animator>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        DeathLayer = LayerMask.NameToLayer("Death Layer");
+    }
 
     protected void DeathSequence(Collision2D collision)
     {
-        // play animation, stop moving, remove collider, destroy
+        // stop movement, play animation, change layer to prevent anymore collision, destroy
         isAlive = false;
         an.SetBool("isAlive", isAlive);
+        gameObject.layer = DeathLayer;
+        rb.gravityScale = 0;
         Destroy(gameObject, 0.5f);
-        objectPooler.ReturnObjectToPool(collision.gameObject);
     }
 }

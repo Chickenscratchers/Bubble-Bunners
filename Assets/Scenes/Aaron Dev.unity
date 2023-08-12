@@ -4026,7 +4026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3089529870198623594, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3089529870198623594, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4802,10 +4802,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Worm
       objectReference: {fileID: 0}
-    - target: {fileID: 4228668262371387219, guid: 3c03a28af0df74132b9e743f4098276b, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c03a28af0df74132b9e743f4098276b, type: 3}
 --- !u!1 &1889435888
@@ -4937,11 +4933,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1909770897584539809, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.52
+      value: -5.31
       objectReference: {fileID: 0}
     - target: {fileID: 1909770897584539809, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.31
+      value: -0.79
       objectReference: {fileID: 0}
     - target: {fileID: 1909770897584539809, guid: 68adfcbbf2f7841478ab56a9d11cc3c9, type: 3}
       propertyPath: m_LocalPosition.z

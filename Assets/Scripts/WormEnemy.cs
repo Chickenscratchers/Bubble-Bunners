@@ -60,11 +60,10 @@ public class WormEnemy : BaseEnemy
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player Projectile"))
+        if (isAlive && collision.gameObject.CompareTag("Player Projectile"))
         {
             DeathSequence(collision);
         }
     }
-
 
 }

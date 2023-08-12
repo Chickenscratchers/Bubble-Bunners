@@ -22,26 +22,29 @@ public class BeeEnemy : BaseEnemy
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
-        float currentHorizSpeed = horizSpeed * direction;
-        float currentVertSpeed = Mathf.Sin(Time.time * vertSpeed) * vertHeight;
-
-        // apply motion based on horizontal and vertical speed
-        Vector2 movement = new Vector2(currentHorizSpeed, currentVertSpeed) * Time.deltaTime;
-        transform.Translate(movement);
-
-
-        // track how long we've been moving in this direction
-        timer += Time.deltaTime;
-
-
-        // turn around if we've hit the set time
-        if (timer > timeTraveled)
+        if (isAlive)
         {
-            timer = 0;
-            direction *= -1;
-            sr.flipX = !sr.flipX;
+            float currentHorizSpeed = horizSpeed * direction;
+            float currentVertSpeed = Mathf.Sin(Time.time * vertSpeed) * vertHeight;
+
+            // apply motion based on horizontal and vertical speed
+            Vector2 movement = new Vector2(currentHorizSpeed, currentVertSpeed) * Time.deltaTime;
+            transform.Translate(movement);
+
+
+            // track how long we've been moving in this direction
+            timer += Time.deltaTime;
+
+
+            // turn around if we've hit the set time
+            if (timer > timeTraveled)
+            {
+                timer = 0;
+                direction *= -1;
+                sr.flipX = !sr.flipX;
+            }
         }
     }
 
@@ -49,8 +52,7 @@ public class BeeEnemy : BaseEnemy
     {
         if (collision.gameObject.CompareTag("Player Projectile"))
         {
-            objectPooler.ReturnObjectToPool(collision.gameObject);
-            Destroy(gameObject);
+            DeathSequence(collision);
         }
     }
 }
