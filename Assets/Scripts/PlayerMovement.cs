@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private float xLocalScale;
     private float inputX;
-    private int facingRight;
+    private int facingRight = 1; // start by facing right
     private float bubbleTimer;
 
     private void Start()
@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         xLocalScale = transform.localScale.x;
-        facingRight = 1;
         bubbleTimer = bubbleCooldown;
     }
 

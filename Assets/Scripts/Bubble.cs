@@ -34,8 +34,9 @@ public class Bubble : MonoBehaviour
         isAlive = true;
         gameObject.layer = DefaultLayer;
         int facingRight = playerMovement.getFacingRight();
-        transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, player.transform.position.z);
+        transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
         setDirection(facingRight);
+        Debug.Log("Direction: " + facingRight);
     }
 
     void FixedUpdate()
@@ -45,6 +46,8 @@ public class Bubble : MonoBehaviour
             float currentHorizSpeed = speed * direction;
             Vector2 movement = new Vector2(currentHorizSpeed, 0) * Time.deltaTime;
             transform.Translate(movement);
+            Debug.Log(movement);
+
         }
         else
         {
@@ -64,8 +67,8 @@ public class Bubble : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > range)
         {
-            objectPooler.ReturnObjectToPool(gameObject);
             timer = 0;
+            objectPooler.ReturnObjectToPool(gameObject);
         }
     }
 
