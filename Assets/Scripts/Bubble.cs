@@ -36,7 +36,6 @@ public class Bubble : MonoBehaviour
         int facingRight = playerMovement.getFacingRight();
         transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
         setDirection(facingRight);
-        Debug.Log("Direction: " + facingRight);
     }
 
     void FixedUpdate()
@@ -46,7 +45,6 @@ public class Bubble : MonoBehaviour
             float currentHorizSpeed = speed * direction;
             Vector2 movement = new Vector2(currentHorizSpeed, 0) * Time.deltaTime;
             transform.Translate(movement);
-            Debug.Log(movement);
 
         }
         else

@@ -5,10 +5,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public Vector2 speed;
-    public Vector2 jumpHeight;
+    public float runSpeed;
+    public float jumpHeight;
     public ObjectPooler objectPooler;
     public float bubbleCooldown;
+    public Vector2 size = new Vector2(1f, 1f);
 
     private bool isGrounded = false; // Plyaer is grounded if box collider
     private Rigidbody2D rigidBody;
@@ -19,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private float inputX;
     private int facingRight = 1; // start by facing right
     private float bubbleTimer;
+    private Vector2 bottomRightCorner = new Vector2(0.5f, -1f);
+    private Vector2 bottomLeftCorner = new Vector2(-0.5f, -1f);
 
     private void Start()
     {
@@ -32,16 +35,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 movement = new Vector2(speed.x * inputX, 0);
-        movement *= Time.deltaTime;
-        transform.Translate(movement);
-        bubbleTimer += Time.deltaTime;
+
+        // check if we're on the ground
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.4f, LayerMask.GetMask("Ground"));
+
+        // get arrow key input
+        inputX = Input.GetAxis("Horizontal");
+        Vector2 movement = new Vector2(inputX * runSpeed, rigidBody.velocity.y);
+        rigidBody.velocity = movement;
+
+        CheckCollision(bottomRightCorner);
+        CheckCollision(bottomLeftCorner);
+
     }
 
     void Update()
     {
-        inputX = Input.GetAxis("Horizontal");
-        
+
+        bubbleTimer += Time.deltaTime;
+
         if (inputX != 0)
         {
             anim.SetBool("Walk", true);
@@ -61,11 +73,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Jump only w/ space key down + player is grounded
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
             anim.SetBool("Walk", false);
             anim.SetTrigger("Jump");
-            rigidBody.AddForce(jumpHeight, ForceMode2D.Impulse);
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpHeight);
         }
 
         // Shoot a bubble with C key
@@ -78,21 +90,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void CheckCollision(Vector2 direction)
     {
-        // Checks box collider collisions with tag as "Grounded" for jump enablement
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
+        // Cast a ray to check for collisions in the specified direction
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 0.4f, LayerMask.GetMask("Ground"));
 
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        // Checks box collider collisions with tag as "Grounded" for jump enablement
-        if (collision.gameObject.CompareTag("Ground"))
+        // Debug visualization of the corner position
+        Debug.DrawRay(transform.position, direction *0.4f, Color.black);
+
+        // Check if there is a collider at the corner position
+        if (hit.collider != null)
         {
-            isGrounded = false;
+            Debug.Log("Collision at the corner!");
+            // Perform actions based on the corner collision
+
+            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         }
     }
 
@@ -100,4 +112,5 @@ public class PlayerMovement : MonoBehaviour
     {
         return facingRight;
     }
+
 }
