@@ -20,8 +20,14 @@ public class PlayerMovement : MonoBehaviour
     private float inputX;
     private int facingRight = 1; // start by facing right
     private float bubbleTimer;
+
     private Vector2 bottomRightCorner = new Vector2(0.5f, -1f);
     private Vector2 bottomLeftCorner = new Vector2(-0.5f, -1f);
+    private Vector2 topRightCorner = new Vector2(0.5f, 1f);
+    private Vector2 topLeftCorner = new Vector2(-0.5f, 1f);
+    private Vector2 rightDirection = new Vector2(0.4f, 0);
+    private Vector2 leftDirection = new Vector2(-0.4f, 0);
+
 
     private void Start()
     {
@@ -44,8 +50,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 movement = new Vector2(inputX * runSpeed, rigidBody.velocity.y);
         rigidBody.velocity = movement;
 
-        CheckCollision(bottomRightCorner);
-        CheckCollision(bottomLeftCorner);
+        // prevent movement if we're running into the side of a wall
+        CheckCornerCollisions();
 
     }
 
@@ -90,6 +96,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+    // check for collisions in all directions so that player collider doesn't overlap with wall colliders
+    // not my favorite solution but works for now
+    void CheckCornerCollisions()
+    {
+        CheckCollision(bottomRightCorner);
+        CheckCollision(bottomLeftCorner);
+        CheckCollision(topRightCorner);
+        CheckCollision(topLeftCorner);
+        CheckCollision(rightDirection);
+        CheckCollision(leftDirection);
+    }
+
     void CheckCollision(Vector2 direction)
     {
         // Cast a ray to check for collisions in the specified direction
@@ -98,12 +117,10 @@ public class PlayerMovement : MonoBehaviour
         // Debug visualization of the corner position
         Debug.DrawRay(transform.position, direction *0.4f, Color.black);
 
-        // Check if there is a collider at the corner position
+        // Check if the ray hits a collider
         if (hit.collider != null)
         {
-            Debug.Log("Collision at the corner!");
-            // Perform actions based on the corner collision
-
+            // prevent horizontal movement
             rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         }
     }

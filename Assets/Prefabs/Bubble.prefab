@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3089529870198623594
 Transform:
   m_ObjectHideFlags: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   range: 1
-  player: {fileID: 627523450118887, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
-  objectPooler: {fileID: 7826217557567551300, guid: c76f667ff7f3541d39f99e70d241bd63, type: 3}
+  player: {fileID: 0}
+  objectPooler: {fileID: 0}
 --- !u!58 &346099482
 CircleCollider2D:
   m_ObjectHideFlags: 0

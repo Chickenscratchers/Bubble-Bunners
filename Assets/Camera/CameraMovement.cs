@@ -5,10 +5,22 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     public Transform player;
+    public float minXPosition;
+    public float maxXPosition;
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position = new Vector3(player.position.x, transform.position.y, transform.position.z);
+        float xPosition = player.transform.position.x;
+        if (xPosition < minXPosition)
+        {
+            xPosition = minXPosition;
+        }
+        else if (xPosition > maxXPosition)
+        {
+            xPosition = maxXPosition;
+        }
+
+        transform.position = new Vector3(xPosition, transform.position.y, transform.position.z);
     }
 }
