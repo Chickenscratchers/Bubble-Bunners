@@ -7,9 +7,12 @@ public class PlayerMovement : MonoBehaviour
 
     public float runSpeed;
     public float jumpHeight;
+    public float knockbackForce;
+    public float knockbackTime;
     public ObjectPooler objectPooler;
     public float bubbleCooldown;
     public Vector2 size = new Vector2(1f, 1f);
+    public GameManager gameManager;
 
     private bool isGrounded = false; // Plyaer is grounded if box collider
     private Rigidbody2D rigidBody;
@@ -20,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     private float inputX;
     private int facingRight = 1; // start by facing right
     private float bubbleTimer;
+    private bool isKnockedBack;
+    private float knockbackTimer;
 
     private Vector2 bottomRightCorner = new Vector2(0.5f, -1f);
     private Vector2 bottomLeftCorner = new Vector2(-0.5f, -1f);
@@ -37,18 +42,30 @@ public class PlayerMovement : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         xLocalScale = transform.localScale.x;
         bubbleTimer = bubbleCooldown;
+        knockbackTimer = knockbackTime;
     }
 
     private void FixedUpdate()
     {
 
         // check if we're on the ground
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.4f, LayerMask.GetMask("Ground"));
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.4f, LayerMask.GetMask("Immovable"));
 
-        // get arrow key input
-        inputX = Input.GetAxis("Horizontal");
-        Vector2 movement = new Vector2(inputX * runSpeed, rigidBody.velocity.y);
-        rigidBody.velocity = movement;
+        // prevent movement while being knocked back
+        if (isKnockedBack)
+        {
+            knockbackTimer -= Time.deltaTime;
+            if (knockbackTimer <= 0)
+            {
+                isKnockedBack = false;
+            }
+        }
+        else
+        {
+            // get arrow key input
+            inputX = Input.GetAxis("Horizontal");
+            rigidBody.velocity = new Vector2(inputX * runSpeed, rigidBody.velocity.y);
+        }
 
         // prevent movement if we're running into the side of a wall
         CheckCornerCollisions();
@@ -96,23 +113,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     // check for collisions in all directions so that player collider doesn't overlap with wall colliders
     // not my favorite solution but works for now
     void CheckCornerCollisions()
     {
-        CheckCollision(bottomRightCorner);
-        CheckCollision(bottomLeftCorner);
-        CheckCollision(topRightCorner);
-        CheckCollision(topLeftCorner);
-        CheckCollision(rightDirection);
-        CheckCollision(leftDirection);
+        if (facingRight == 1)
+        {
+            CheckCollision(bottomRightCorner);
+            CheckCollision(topRightCorner);
+            CheckCollision(rightDirection);
+
+        }
+        else
+        {
+            CheckCollision(bottomLeftCorner);
+            CheckCollision(topLeftCorner);
+            CheckCollision(leftDirection);
+        }
+
     }
 
     void CheckCollision(Vector2 direction)
     {
         // Cast a ray to check for collisions in the specified direction
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 0.4f, LayerMask.GetMask("Ground"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 0.4f, LayerMask.GetMask("Immovable"));
 
         // Debug visualization of the corner position
         Debug.DrawRay(transform.position, direction *0.4f, Color.black);
@@ -125,9 +149,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void KnockbackPlayer()
+    {
+        // Apply knockback force, start knockback timer
+        rigidBody.velocity = new Vector2(-facingRight * knockbackForce, knockbackForce);
+        isKnockedBack = true;
+        knockbackTimer = knockbackTime;
+    }
+
     public int getFacingRight()
     {
         return facingRight;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Death")
+        {
+            gameManager.GameOver();
+        }
+    }
 }

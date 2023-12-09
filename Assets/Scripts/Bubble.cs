@@ -87,8 +87,4 @@ public class Bubble : MonoBehaviour
         }
     }
 
-    public void removeBubble()
-    {
-    }
-
 }

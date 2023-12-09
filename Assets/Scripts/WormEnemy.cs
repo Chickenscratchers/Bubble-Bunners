@@ -35,8 +35,7 @@ public class WormEnemy : BaseEnemy
             float currentHorizSpeed = movementSpeedCurve.Evaluate(timer) * direction;
 
             // apply motion based on horizontal speed and animation curve
-            Vector2 movement = new Vector2(currentHorizSpeed, 0) * Time.deltaTime;
-            transform.Translate(movement);
+            rb.velocity = new Vector2(currentHorizSpeed, 0);
 
             timer += Time.deltaTime;
 

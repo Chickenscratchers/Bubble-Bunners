@@ -169,8 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlive: 1
-  objectPooler: {fileID: 0}
   horizSpeed: 2
   vertSpeed: 5
-  vertHeight: 5
+  vertHeight: 4
   timeTraveled: 3

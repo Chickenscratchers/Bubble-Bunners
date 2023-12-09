@@ -30,9 +30,7 @@ public class BeeEnemy : BaseEnemy
             float currentVertSpeed = Mathf.Sin(Time.time * vertSpeed) * vertHeight;
 
             // apply motion based on horizontal and vertical speed
-            Vector2 movement = new Vector2(currentHorizSpeed, currentVertSpeed) * Time.deltaTime;
-            transform.Translate(movement);
-
+            rb.velocity = new Vector2(currentHorizSpeed, currentVertSpeed);
 
             // track how long we've been moving in this direction
             timer += Time.deltaTime;

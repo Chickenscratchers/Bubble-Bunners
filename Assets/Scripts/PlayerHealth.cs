@@ -11,10 +11,12 @@ public class PlayerHealth : MonoBehaviour
     private bool invincible = false;
     [SerializeField] private float invincibilityDurationSeconds;
     private FlashBehavior flashBehavior;
+    private PlayerMovement playerMovement;
 
     void Start()
     {
         flashBehavior = GetComponent<FlashBehavior>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -26,12 +28,15 @@ public class PlayerHealth : MonoBehaviour
                 health--;
                 if (health <= 0)
                 {
-                    Debug.Log("Player died");
+                    //Debug.Log("Player died");
                 }
-                Debug.Log("Start flash");
+
+                playerMovement.KnockbackPlayer();
+
+                //Debug.Log("Start flash");
                 flashBehavior.Flash();
 
-                Debug.Log("Start invincible");
+                //Debug.Log("Start invincible");
                 StartCoroutine(enterTemporaryInvincibility());
                 
             }
@@ -41,11 +46,11 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator enterTemporaryInvincibility()
     {
         invincible = true;
-        Debug.Log("Is invincible");
+        //Debug.Log("Is invincible");
 
         yield return new WaitForSeconds(invincibilityDurationSeconds);
 
         invincible = false;
-        Debug.Log("No longer invincible");
+        //Debug.Log("No longer invincible");
     }
 }

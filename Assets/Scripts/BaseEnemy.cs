@@ -26,4 +26,10 @@ public class BaseEnemy : MonoBehaviour
         rb.gravityScale = 0;
         Destroy(gameObject, 0.5f);
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision);
+        rb.velocity = Vector2.zero;
+    }
 }
