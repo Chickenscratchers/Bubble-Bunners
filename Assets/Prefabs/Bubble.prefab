@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ee8c7bcaa934ebf965db439ef79ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  range: 1
+  speed: 4
+  range: 2
   player: {fileID: 0}
   objectPooler: {fileID: 0}
 --- !u!58 &346099482

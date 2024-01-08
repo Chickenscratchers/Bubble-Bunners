@@ -8,8 +8,6 @@ public class WormEnemy : BaseEnemy
     public int numMoves;
     public AnimationCurve movementSpeedCurve;
 
-    private float direction;
-    private float timer;
     private int moves;
     private float curveTime;
 
@@ -17,8 +15,6 @@ public class WormEnemy : BaseEnemy
 
     void Start()
     {
-        direction = 1;
-        timer = 0;
         moves = 0;
         curveTime = movementSpeedCurve[movementSpeedCurve.length - 1].time;
 

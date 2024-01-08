@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public MainMenuController mainMenuController;
     public GameObject player;
     public DeathMenu deathMenu;
+    public GameObject enemiesList;
 
     private Vector3 playerStartPoint;
 
@@ -25,6 +26,12 @@ public class GameManager : MonoBehaviour
     public void Reset()
     {
         deathMenu.gameObject.SetActive(false);
-        
+        player.transform.position = playerStartPoint;
+        player.SetActive(true);
+
+        foreach(Transform child in enemiesList.transform)
+        {
+            child.GetComponent<BaseEnemy>().Reset();
+        }
     }
 }

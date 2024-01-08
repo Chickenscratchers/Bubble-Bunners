@@ -10,10 +10,10 @@ public class BeeEnemy : BaseEnemy
     public float vertHeight;
     public float timeTraveled;
 
-    private float direction;
-    private float timer;
-
     private SpriteRenderer sr;
+    private float sinWaveTimer = 0;
+    private float currentHorizSpeed = 0;
+    private float currentVertSpeed = 0;
 
     void Start()
     {
@@ -26,8 +26,9 @@ public class BeeEnemy : BaseEnemy
     {
         if (isAlive)
         {
-            float currentHorizSpeed = horizSpeed * direction;
-            float currentVertSpeed = Mathf.Sin(Time.time * vertSpeed) * vertHeight;
+            sinWaveTimer += Time.deltaTime;
+            currentHorizSpeed = horizSpeed * direction;
+            currentVertSpeed = Mathf.Sin(sinWaveTimer * vertSpeed) * vertHeight;
 
             // apply motion based on horizontal and vertical speed
             rb.velocity = new Vector2(currentHorizSpeed, currentVertSpeed);
@@ -52,5 +53,11 @@ public class BeeEnemy : BaseEnemy
         {
             DeathSequence(collision);
         }
+    }
+
+    // reset the position along the sin wave this bee is in
+    protected override void ChildReset()
+    {
+        sinWaveTimer = 0;
     }
 }
