@@ -6,6 +6,7 @@ public class Bubble : MonoBehaviour
 {
     public float speed;
     public float range;
+    public float persistTime;
     public float bobbingMaxSpeed;
     public float bobbingSpeed;
     public float bobbingAccelerator;
@@ -22,6 +23,7 @@ public class Bubble : MonoBehaviour
     private bool isAlive = true;
     private int DeathLayer;
     private int DefaultLayer;
+    private float currentSpeed;
 
     void Awake()
     {
@@ -36,6 +38,7 @@ public class Bubble : MonoBehaviour
     {
         // set the bubble's position, direction, layer and status to active
         isAlive = true;
+        currentSpeed = speed;
         gameObject.layer = DefaultLayer;
         int facingRight = playerMovement.getFacingRight();
         transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
@@ -48,7 +51,7 @@ public class Bubble : MonoBehaviour
         if (isAlive)
         {
             // set the horizontal speed based on the AnimationCurve
-            float currentHorizSpeed = movementSpeedCurve.Evaluate(timer) * speed * direction;
+            float currentHorizSpeed = movementSpeedCurve.Evaluate(timer) * currentSpeed * direction;
             Vector2 movement = new Vector2(currentHorizSpeed, bobbingSpeed) * Time.deltaTime;
             transform.Translate(movement);
 
@@ -68,13 +71,18 @@ public class Bubble : MonoBehaviour
 
     void Update()
     {
-        // disappear after a certain amount of time
         timer += Time.deltaTime;
-        
-        if (timer > range)
+
+        if (timer > range + persistTime)
         {
+            // disappear after a certain amount of time
             timer = 0;
             objectPooler.ReturnObjectToPool(gameObject);
+        }
+        else if (timer > range)
+        {
+            // stop moving horizontally after a set time
+            currentSpeed = 0.5f;
         }
 
         // bob the bubble up and down

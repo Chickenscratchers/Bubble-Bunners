@@ -1470,6 +1470,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5451786283175901793, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
+      propertyPath: persistTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5451786283175901793, guid: c49c8d696a9474e62b9a30a96eddcb6f, type: 3}
       propertyPath: bobbingSpeed
       value: 0
       objectReference: {fileID: 0}
