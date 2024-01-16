@@ -11,15 +11,12 @@ public class WormEnemy : BaseEnemy
     private int moves;
     private float curveTime;
 
-    private SpriteRenderer sr;
-
     void Start()
     {
         moves = 0;
         curveTime = movementSpeedCurve[movementSpeedCurve.length - 1].time;
 
         an = gameObject.GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -53,11 +50,11 @@ public class WormEnemy : BaseEnemy
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (isAlive && collision.gameObject.CompareTag("Player Projectile"))
+        if (isAlive && collider.CompareTag("Player Projectile"))
         {
-            DeathSequence(collision);
+            DeathSequence();
         }
     }
 

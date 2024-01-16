@@ -7,9 +7,10 @@ public class BaseEnemy : MonoBehaviour
     public bool isAlive = true;
 
     protected Animator an;
+    protected Rigidbody2D rb;
+    protected SpriteRenderer sr;
     protected int DeathLayer;
     protected int DefaultLayer;
-    protected Rigidbody2D rb;
     protected Vector3 startPosition;
     protected float timer = 0;
     protected float direction = 1;
@@ -19,6 +20,7 @@ public class BaseEnemy : MonoBehaviour
     {
         an = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        sr = gameObject.GetComponent<SpriteRenderer>();
         DeathLayer = LayerMask.NameToLayer("Death Layer");
         DefaultLayer = LayerMask.NameToLayer("Default");
         startPosition = gameObject.transform.position;
@@ -35,11 +37,11 @@ public class BaseEnemy : MonoBehaviour
         rb.gravityScale = gravityScale;
     }
 
-    protected void DeathSequence(Collision2D collision)
+    protected void DeathSequence()
     {
-        // stop movement, play animation, change layer to prevent anymore collision, destroy
+        // stop movement, play animation, change layer to prevent anymore collision, deactivate
         isAlive = false;
-        an.SetBool("isAlive", isAlive);
+        an.SetBool("isAlive", false);
         gameObject.layer = DeathLayer;
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
@@ -59,6 +61,7 @@ public class BaseEnemy : MonoBehaviour
         timer = 0;
         direction = 1;
         ChildReset();
+        sr.flipX = false;
         gameObject.SetActive(true);
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -5451786283175901793}
   - component: {fileID: 346099482}
   - component: {fileID: 346099486}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bubble
   m_TagString: Player Projectile
   m_Icon: {fileID: 0}
@@ -99,10 +99,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ee8c7bcaa934ebf965db439ef79ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 8
   range: 2
+  persistTime: 3
+  bobbingMaxSpeed: 0.4
+  bobbingSpeed: 0
+  bobbingAccelerator: 0.0015
   player: {fileID: 0}
   objectPooler: {fileID: 0}
+  movementSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.1
+      inSlope: 2.7833407
+      outSlope: 2.7833407
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.06298828
+      value: 0.27531785
+      inSlope: 1.3393826
+      outSlope: 1.3393826
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8832309
+      value: 0.18954073
+      inSlope: -0.062445916
+      outSlope: -0.062445916
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.7833984
+      value: 0.17125244
+      inSlope: -0.020316536
+      outSlope: -0.020316536
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!58 &346099482
 CircleCollider2D:
   m_ObjectHideFlags: 0

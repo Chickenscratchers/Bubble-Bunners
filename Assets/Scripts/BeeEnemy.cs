@@ -10,7 +10,6 @@ public class BeeEnemy : BaseEnemy
     public float vertHeight;
     public float timeTraveled;
 
-    private SpriteRenderer sr;
     private float sinWaveTimer = 0;
     private float currentHorizSpeed = 0;
     private float currentVertSpeed = 0;
@@ -18,7 +17,6 @@ public class BeeEnemy : BaseEnemy
     void Start()
     {
         direction = 1;
-        sr = GetComponent<SpriteRenderer>();
     }
 
 
@@ -47,11 +45,11 @@ public class BeeEnemy : BaseEnemy
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.CompareTag("Player Projectile"))
+        if (collider.CompareTag("Player Projectile"))
         {
-            DeathSequence(collision);
+            DeathSequence();
         }
     }
 

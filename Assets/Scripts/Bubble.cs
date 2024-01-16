@@ -18,7 +18,7 @@ public class Bubble : MonoBehaviour
     private Animator animator;
 
     private int direction = 1;
-    private float timer = 0;
+    private float timer;
     private float offset = 0.5f;
     private bool isAlive = true;
     private int DeathLayer;
@@ -38,6 +38,7 @@ public class Bubble : MonoBehaviour
     {
         // set the bubble's position, direction, layer and status to active
         isAlive = true;
+        timer = 0;
         currentSpeed = speed;
         gameObject.layer = DefaultLayer;
         int facingRight = playerMovement.getFacingRight();
@@ -98,15 +99,20 @@ public class Bubble : MonoBehaviour
         direction = d;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void popBubble()
     {
-        if (isAlive && collision.gameObject.CompareTag("Enemy"))
+        isAlive = false;
+        gameObject.layer = DeathLayer;
+        objectPooler.ReturnObjectToPool(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (isAlive && collider.CompareTag("Enemy"))
         {
-            isAlive = false;
-            animator.SetBool("isAlive", isAlive);
-            transform.position = new Vector3(collision.gameObject.transform.position.x, collision.gameObject.transform.position.y);
-            gameObject.layer = DeathLayer;
-            //objectPooler.ReturnObjectToPool(gameObject);
+            transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y);
+            animator.SetBool("isAlive", false);
+            popBubble();
         }
     }
 

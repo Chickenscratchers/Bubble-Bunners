@@ -9,16 +9,14 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight;
     public float knockbackForce;
     public float knockbackTime;
-    public ObjectPooler objectPooler;
     public float bubbleCooldown;
     public Vector2 size = new Vector2(1f, 1f);
+    public ObjectPooler objectPooler;
     public GameManager gameManager;
 
-    private bool isGrounded = false; // Plyaer is grounded if box collider
+    private bool isGrounded = false; // Player is grounded if box collider
     private Rigidbody2D rigidBody;
     private Animator anim;
-    private SpriteRenderer spriteRenderer;
-    private BoxCollider2D boxCollider;
     private float xLocalScale;
     private float inputX;
     private int facingRight = 1; // start by facing right
@@ -30,16 +28,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 bottomLeftCorner = new Vector2(-0.5f, -1f);
     private Vector2 topRightCorner = new Vector2(0.5f, 1f);
     private Vector2 topLeftCorner = new Vector2(-0.5f, 1f);
-    private Vector2 rightDirection = new Vector2(0.4f, 0);
-    private Vector2 leftDirection = new Vector2(-0.4f, 0);
+    private Vector2 rightDirection = new Vector2(0.5f, 0);
+    private Vector2 leftDirection = new Vector2(-0.5f, 0);
 
 
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        boxCollider = GetComponent<BoxCollider2D>();
         xLocalScale = transform.localScale.x;
         bubbleTimer = bubbleCooldown;
         knockbackTimer = knockbackTime;
@@ -142,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(transform.position, direction *0.4f, Color.black);
 
         // Check if the ray hits a collider
-        if (hit.collider != null)
+        if (hit.collider)
         {
             // prevent horizontal movement
             rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
