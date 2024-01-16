@@ -20339,7 +20339,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 586442958, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.002
+      value: 0.012
+      objectReference: {fileID: 0}
+    - target: {fileID: 586442959, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.0547266
+      objectReference: {fileID: 0}
+    - target: {fileID: 586442959, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.40450048
       objectReference: {fileID: 0}
     - target: {fileID: 627523450118882, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
       propertyPath: gameManager
@@ -20349,6 +20357,14 @@ PrefabInstance:
       propertyPath: objectPooler
       value: 
       objectReference: {fileID: 2087667411}
+    - target: {fileID: 627523450118884, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.88281435
+      objectReference: {fileID: 0}
+    - target: {fileID: 627523450118884, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.0014071763
+      objectReference: {fileID: 0}
     - target: {fileID: 627523450118885, guid: a2e9cd6f5509f40e1a7403134b42976d, type: 3}
       propertyPath: m_RootOrder
       value: 1
