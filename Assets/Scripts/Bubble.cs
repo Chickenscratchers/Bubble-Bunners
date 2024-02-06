@@ -13,6 +13,9 @@ public class Bubble : MonoBehaviour
     public GameObject player;
     public ObjectPooler objectPooler;
     public AnimationCurve movementSpeedCurve;
+    public List<AudioSource> bubbleSounds;
+    public List<AudioSource> popSounds;
+    public AudioSource dropSound;
 
     private PlayerMovement playerMovement;
     private Animator animator;
@@ -24,26 +27,21 @@ public class Bubble : MonoBehaviour
     private int DeathLayer;
     private int DefaultLayer;
     private float currentSpeed;
+    private SpriteRenderer spriteRenderer;
 
     void Awake()
     {
         // used to see which direction the player is facing
         playerMovement = player.GetComponent<PlayerMovement>();
         animator = gameObject.GetComponent<Animator>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         DeathLayer = LayerMask.NameToLayer("Death Layer");
         DefaultLayer = LayerMask.NameToLayer("Default");
     }
 
     void OnEnable()
     {
-        // set the bubble's position, direction, layer and status to active
-        isAlive = true;
-        timer = 0;
-        currentSpeed = speed;
-        gameObject.layer = DefaultLayer;
-        int facingRight = playerMovement.getFacingRight();
-        transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
-        setDirection(facingRight);
+        resetBubble();
     }
 
     void FixedUpdate()
@@ -56,17 +54,6 @@ public class Bubble : MonoBehaviour
             Vector2 movement = new Vector2(currentHorizSpeed, bobbingSpeed) * Time.deltaTime;
             transform.Translate(movement);
 
-        }
-        else
-        {
-            // wait for the animation to end then return the bubble object to the pool
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-            if (stateInfo.normalizedTime >= 0.6f)
-            {
-                // Animation has ended
-                objectPooler.ReturnObjectToPool(gameObject);
-            }
         }
     }
 
@@ -99,11 +86,53 @@ public class Bubble : MonoBehaviour
         direction = d;
     }
 
-    public void popBubble()
+    public void popBubble(bool popSound)
     {
+        timer = 0;
+        animator.SetBool("isAlive", false);
         isAlive = false;
         gameObject.layer = DeathLayer;
-        objectPooler.ReturnObjectToPool(gameObject);
+
+        if (popSound)
+        {
+            int bubbleSoundsIndex = Random.Range(0, 3);
+            popSounds[bubbleSoundsIndex].Play();
+        }
+        else
+        {
+            dropSound.Play();
+        }
+
+        // wait for the animation to end then return the bubble object to the pool
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.normalizedTime >= 0.5f)
+        {
+            // Animation has ended
+            objectPooler.ReturnObjectToPool(gameObject);
+        }
+    }
+
+    public void resetBubble()
+    {
+        int bubbleSoundsIndex = Random.Range(0, 4);
+        int facingRight = playerMovement.getFacingRight();
+        Color currentColor = spriteRenderer.color;
+
+        // set the bubble's position, direction, layer and status to active
+        isAlive = true;
+        animator.SetBool("isAlive", true);
+
+        currentSpeed = speed;
+        gameObject.layer = DefaultLayer;
+        transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
+        setDirection(facingRight);
+
+
+        currentColor.a = 1;
+        spriteRenderer.color = currentColor;
+
+        bubbleSounds[bubbleSoundsIndex].Play();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -111,8 +140,7 @@ public class Bubble : MonoBehaviour
         if (isAlive && collider.CompareTag("Enemy"))
         {
             transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y);
-            animator.SetBool("isAlive", false);
-            popBubble();
+            popBubble(false);
         }
     }
 

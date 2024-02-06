@@ -17,7 +17,7 @@ public class FootCollider : MonoBehaviour
         if (collider.tag == "Player Projectile" && parentRigidBody.position.y > collider.gameObject.transform.position.y && parentRigidBody.velocity.y < 0)
         {
             parentRigidBody.velocity = new Vector2(transform.localScale.x, bubbleBounceHeight);
-            collider.GetComponent<Bubble>().popBubble();
+            collider.GetComponent<Bubble>().popBubble(true);
         }
     }
 }

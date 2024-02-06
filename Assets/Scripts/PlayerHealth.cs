@@ -6,15 +6,18 @@ public class PlayerHealth : MonoBehaviour
 {
 
     public int health;
+    public GameObject healthParent;
 
     private readonly string EnemyTag = "Enemy";
     private bool invincible = false;
     [SerializeField] private float invincibilityDurationSeconds;
     private FlashBehavior flashBehavior;
     private PlayerMovement playerMovement;
+    private RenderHealth heartRenderer;
 
     void Start()
     {
+        heartRenderer = healthParent.GetComponent<RenderHealth>();
         flashBehavior = GetComponent<FlashBehavior>();
         playerMovement = GetComponent<PlayerMovement>();
     }
@@ -25,20 +28,7 @@ public class PlayerHealth : MonoBehaviour
         { 
             if (collision.gameObject.tag == EnemyTag && collision.gameObject.GetComponent<BaseEnemy>().isAlive)
             {
-                health--;
-                if (health <= 0)
-                {
-                    //Debug.Log("Player died");
-                }
-
-                playerMovement.KnockbackPlayer();
-
-                //Debug.Log("Start flash");
-                flashBehavior.Flash();
-
-                //Debug.Log("Start invincible");
-                StartCoroutine(enterTemporaryInvincibility());
-                
+                TakeDamage();
             }
         }
     }
@@ -52,5 +42,23 @@ public class PlayerHealth : MonoBehaviour
 
         invincible = false;
         //Debug.Log("No longer invincible");
+    }
+
+    private void TakeDamage()
+    {
+        health--;
+        heartRenderer.LoseHeart();
+        if (health <= 0)
+        {
+            //Debug.Log("Player died");
+        }
+
+        playerMovement.KnockbackPlayer();
+
+        //Debug.Log("Start flash");
+        flashBehavior.Flash();
+
+        //Debug.Log("Start invincible");
+        StartCoroutine(enterTemporaryInvincibility());
     }
 }

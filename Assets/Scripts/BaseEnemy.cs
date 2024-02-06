@@ -21,7 +21,7 @@ public class BaseEnemy : MonoBehaviour
         an = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         sr = gameObject.GetComponent<SpriteRenderer>();
-        DeathLayer = LayerMask.NameToLayer("Death Layer");
+        DeathLayer = LayerMask.NameToLayer("Death Layer"); // a layer that does not collide with anything
         DefaultLayer = LayerMask.NameToLayer("Default");
         startPosition = gameObject.transform.position;
         gravityScale = rb.gravityScale;
@@ -46,7 +46,14 @@ public class BaseEnemy : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         timer = 0;
-        gameObject.SetActive(false);
+
+        AnimatorStateInfo stateInfo = an.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.normalizedTime >= 0.5f)
+        {
+            gameObject.SetActive(false);
+        }
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)
