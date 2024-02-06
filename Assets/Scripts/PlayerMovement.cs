@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 size = new Vector2(1f, 1f);
     public ObjectPooler objectPooler;
     public GameManager gameManager;
+    public bool isKnockedBack;
 
     private bool isGrounded = false; // Player is grounded if box collider
     private Rigidbody2D rigidBody;
@@ -21,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     private float inputX;
     private int facingRight = 1; // start by facing right
     private float bubbleTimer;
-    private bool isKnockedBack;
     private float knockbackTimer;
 
     private Vector2 bottomRightCorner = new Vector2(0.5f, -1f);

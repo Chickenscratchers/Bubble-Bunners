@@ -9,12 +9,17 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public DeathMenu deathMenu;
     public GameObject enemiesList;
+    public GameObject healthParent;
 
     private Vector3 playerStartPoint;
+    private RenderHealth healthRenderer;
+    private PlayerHealth playerHealth;
 
     void Start()
     {
         playerStartPoint = player.transform.position;
+        playerHealth = player.GetComponent<PlayerHealth>();
+        healthRenderer = healthParent.GetComponent<RenderHealth>();
     }
 
     public void GameOver()
@@ -25,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     public void Reset()
     {
+        playerHealth.currentHealth = playerHealth.maxHealth;
+        healthRenderer.RefillHearts();
         deathMenu.gameObject.SetActive(false);
         player.transform.position = playerStartPoint;
         player.SetActive(true);

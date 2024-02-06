@@ -20,7 +20,7 @@ public class RenderHealth : MonoBehaviour
 
     private void RenderSprites(float offset, float scale)
     {
-        int totalHealth = playerHealth.health;
+        int totalHealth = playerHealth.maxHealth;
 
         for (int i = 0; i < totalHealth; i++)
         {
@@ -44,6 +44,15 @@ public class RenderHealth : MonoBehaviour
 
     public void LoseHeart()
     {
-        heartObjects[playerHealth.health].GetComponent<Image>().sprite = emptyHeart;
+        heartObjects[playerHealth.currentHealth].GetComponent<Image>().sprite = emptyHeart;
+    }
+
+    public void RefillHearts()
+    {
+        for (int i = 0; i < heartObjects.Count; i++)
+        {
+            GameObject heartObject = heartObjects[i];
+            heartObject.GetComponent<Image>().sprite = filledHeart;
+        }
     }
 }

@@ -5,8 +5,10 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
 
-    public int health;
+    public int maxHealth;
+    public int currentHealth;
     public GameObject healthParent;
+    public GameObject gameManagerObject;
 
     private readonly string EnemyTag = "Enemy";
     private bool invincible = false;
@@ -14,23 +16,34 @@ public class PlayerHealth : MonoBehaviour
     private FlashBehavior flashBehavior;
     private PlayerMovement playerMovement;
     private RenderHealth heartRenderer;
+    private GameManager gameManager;
 
     void Start()
     {
+        currentHealth = maxHealth;
         heartRenderer = healthParent.GetComponent<RenderHealth>();
+        gameManager = gameManagerObject.GetComponent<GameManager>();
         flashBehavior = GetComponent<FlashBehavior>();
         playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!invincible) 
-        { 
-            if (collision.gameObject.tag == EnemyTag && collision.gameObject.GetComponent<BaseEnemy>().isAlive)
+        // hit an alive enemy
+        if (collision.gameObject.tag == EnemyTag && collision.gameObject.GetComponent<BaseEnemy>().isAlive)
+        {
+            if (!invincible && currentHealth > 0)
             {
                 TakeDamage();
             }
+
+            // if you're invincible and not being knocked back
+            else if (!playerMovement.isKnockedBack)
+            {
+                // stop player from pushing enemies here
+            }
         }
+
     }
 
     private IEnumerator enterTemporaryInvincibility()
@@ -46,19 +59,22 @@ public class PlayerHealth : MonoBehaviour
 
     private void TakeDamage()
     {
-        health--;
-        heartRenderer.LoseHeart();
-        if (health <= 0)
+        currentHealth--;
+        heartRenderer.LoseHeart(); // toggle off a heart
+
+        // taxes
+        if (currentHealth <= 0)
         {
-            //Debug.Log("Player died");
+            gameManager.GameOver();
         }
+        else
+        {
+            // knockback, flash, invincibility
+            playerMovement.KnockbackPlayer();
 
-        playerMovement.KnockbackPlayer();
+            flashBehavior.Flash();
 
-        //Debug.Log("Start flash");
-        flashBehavior.Flash();
-
-        //Debug.Log("Start invincible");
-        StartCoroutine(enterTemporaryInvincibility());
+            StartCoroutine(enterTemporaryInvincibility());
+        }
     }
 }
