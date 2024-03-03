@@ -27,7 +27,9 @@ public class Bubble : MonoBehaviour
     private int DeathLayer;
     private int DefaultLayer;
     private float currentSpeed;
+    //private Sprite originalSprite;
     private SpriteRenderer spriteRenderer;
+    private Color originalColor;
 
     void Awake()
     {
@@ -37,6 +39,8 @@ public class Bubble : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         DeathLayer = LayerMask.NameToLayer("Death Layer");
         DefaultLayer = LayerMask.NameToLayer("Default");
+        //originalSprite = spriteRenderer.sprite;
+        originalColor = spriteRenderer.color;
     }
 
     void OnEnable()
@@ -78,7 +82,7 @@ public class Bubble : MonoBehaviour
         if (Mathf.Abs(bobbingSpeed) >= bobbingMaxSpeed)
         {
             bobbingAccelerator = -bobbingAccelerator;
-        }            
+        }
     }
 
     public void setDirection(int d)
@@ -86,9 +90,9 @@ public class Bubble : MonoBehaviour
         direction = d;
     }
 
+    // handle sounds and animation of bubble popping
     public void popBubble(bool popSound)
     {
-        timer = 0;
         animator.SetBool("isAlive", false);
         isAlive = false;
         gameObject.layer = DeathLayer;
@@ -102,23 +106,14 @@ public class Bubble : MonoBehaviour
         {
             dropSound.Play();
         }
-
-        // wait for the animation to end then return the bubble object to the pool
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-        if (stateInfo.normalizedTime >= 0.5f)
-        {
-            // Animation has ended
-            objectPooler.ReturnObjectToPool(gameObject);
-        }
     }
 
     public void resetBubble()
     {
+        timer = 0;
         int bubbleSoundsIndex = Random.Range(0, 4);
         int facingRight = playerMovement.getFacingRight();
-        Color currentColor = spriteRenderer.color;
-
+        
         // set the bubble's position, direction, layer and status to active
         isAlive = true;
         animator.SetBool("isAlive", true);
@@ -128,19 +123,19 @@ public class Bubble : MonoBehaviour
         transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
         setDirection(facingRight);
 
-
-        currentColor.a = 1;
-        spriteRenderer.color = currentColor;
+        //spriteRenderer.sprite = originalSprite;
+        spriteRenderer.color = originalColor;
 
         bubbleSounds[bubbleSoundsIndex].Play();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (isAlive && collider.CompareTag("Enemy"))
         {
-            transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y);
-            popBubble(false);
+            transform.position = Vector3.MoveTowards(transform.position, collider.transform.position, 50 * Time.deltaTime);
+            popBubble(true);
         }
     }
 

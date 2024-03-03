@@ -45,14 +45,6 @@ public class BeeEnemy : BaseEnemy
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.CompareTag("Player Projectile"))
-        {
-            DeathSequence();
-        }
-    }
-
     // reset the position along the sin wave this bee is in
     protected override void ChildReset()
     {

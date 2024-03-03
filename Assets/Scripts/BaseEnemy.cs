@@ -46,19 +46,20 @@ public class BaseEnemy : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         timer = 0;
-
-        AnimatorStateInfo stateInfo = an.GetCurrentAnimatorStateInfo(0);
-
-        if (stateInfo.normalizedTime >= 0.5f)
-        {
-            gameObject.SetActive(false);
-        }
-
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         rb.velocity = Vector2.zero;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (isAlive && collider.CompareTag("Player Projectile"))
+        {
+            DeathSequence();
+        }
     }
 
     // reset the enemy back to original position and enable any defeated enemies

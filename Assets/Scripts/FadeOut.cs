@@ -8,6 +8,10 @@ public class FadeOut : StateMachineBehaviour
     private Vector3 endPosition;
     private float moveSpeed;
     private bool isMoving;
+    private SpriteRenderer spriteRenderer;
+    private ObjectPooler objectPooler;
+    private bool isProjectile;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -15,6 +19,13 @@ public class FadeOut : StateMachineBehaviour
         endPosition = new Vector3(targetTransform.position.x, targetTransform.position.y + 1f);
         moveSpeed = 1.1f;
         isMoving = true;
+        spriteRenderer = animator.gameObject.GetComponent<SpriteRenderer>();
+        isProjectile = animator.gameObject.CompareTag("Player Projectile");
+
+        if (isProjectile)
+        {
+            objectPooler = animator.gameObject.GetComponent<Bubble>().objectPooler;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,12 +34,26 @@ public class FadeOut : StateMachineBehaviour
         if (isMoving)
         {
             targetTransform.position = Vector3.MoveTowards(targetTransform.position, endPosition, moveSpeed * Time.deltaTime);
+            Color spriteColor = spriteRenderer.color;
+            spriteColor.a -= 0.003f;
+            spriteRenderer.color = spriteColor;
         }
 
 
+        // reached the end position
         if (Vector3.Distance(targetTransform.position, endPosition) < 0.01f)
         {
             isMoving = false;
+
+            // not great but...
+            if (isProjectile)
+            {
+                objectPooler.ReturnObjectToPool(animator.gameObject);
+            }
+            else
+            {
+                animator.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -36,17 +61,6 @@ public class FadeOut : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Debug.Log("Do Something");
+        //animator.gameObject.GetComponent<Bubble>().objectPooler.ReturnObjectToPool(animator.gameObject);
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

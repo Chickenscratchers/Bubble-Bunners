@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3089529870198623592}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.46, y: -2.6, z: -1}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 1}
+  m_LocalPosition: {x: -7.46, y: -2.6, z: 3}
+  m_LocalScale: {x: 0.03, y: 0.03, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,6 +149,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  bubbleSounds: []
+  popSounds: []
+  dropSound: {fileID: 0}
 --- !u!58 &346099482
 CircleCollider2D:
   m_ObjectHideFlags: 0

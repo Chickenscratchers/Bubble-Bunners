@@ -49,13 +49,4 @@ public class WormEnemy : BaseEnemy
         }
 
     }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (isAlive && collider.CompareTag("Player Projectile"))
-        {
-            DeathSequence();
-        }
-    }
-
 }

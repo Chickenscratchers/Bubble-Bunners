@@ -74,8 +74,6 @@ public class ObjectPooler : MonoBehaviour
     // deactivate this object and put it back into the pool
     public void ReturnObjectToPool(GameObject obj)
     {
-        obj.SetActive(false);
-
         LinkedList<GameObject> currentObjectList;
 
         // safety check for this object
@@ -84,6 +82,8 @@ public class ObjectPooler : MonoBehaviour
             Debug.LogWarning("ObjectPooler: Object type '" + obj.name + "' not found in the pool!");
             return;
         }
+
+        obj.SetActive(false);
 
         // add it back into the pool
         currentObjectList.AddLast(obj);
