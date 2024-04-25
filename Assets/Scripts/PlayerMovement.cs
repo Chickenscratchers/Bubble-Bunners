@@ -6,7 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public float runSpeed;
-    public float jumpHeight;
+    public float minJumpHeight = 2;
+    public float maxJumpHeight = 5;
+    public float pressThreshold = 0.5f; // The threshold for considering the key press as a jump
+    public float pressScale = 2f; // Scaling factor for the pressed intensity
     public float knockbackForce;
     public float knockbackTime;
     public float bubbleCooldown;
@@ -21,8 +24,11 @@ public class PlayerMovement : MonoBehaviour
     private float xLocalScale;
     private float inputX;
     private int facingRight = 1; // start by facing right
-    private float bubbleTimer;
+    private float bubbleCooldownTimer;
     private float knockbackTimer;
+    private KeyCode jumpKey = KeyCode.Space;
+    private bool isJumping;
+    private float jumpTimer = 0f;
 
     private Vector2 bottomRightCorner = new Vector2(0.5f, -1f);
     private Vector2 bottomLeftCorner = new Vector2(-0.5f, -1f);
@@ -37,15 +43,13 @@ public class PlayerMovement : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         xLocalScale = transform.localScale.x;
-        bubbleTimer = bubbleCooldown;
+        bubbleCooldownTimer = bubbleCooldown;
         knockbackTimer = knockbackTime;
     }
 
     private void FixedUpdate()
     {
 
-        // check if we're on the ground
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.4f, LayerMask.GetMask("Immovable"));
 
         // prevent movement while being knocked back
         if (isKnockedBack)
@@ -71,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        bubbleTimer += Time.deltaTime;
+        bubbleCooldownTimer += Time.deltaTime;
 
         if (inputX != 0)
         {
@@ -91,21 +95,54 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Walk", false);
         }
 
-        // Jump only w/ space key down + player is grounded
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
-        {
-            anim.SetBool("Walk", false);
-            anim.SetTrigger("Jump");
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpHeight);
-        }
+        CheckGrounded();
+
+        CheckJump();
 
         // Shoot a bubble with C key
-        if (Input.GetKey(KeyCode.C) && bubbleTimer > bubbleCooldown)
+        if (Input.GetKey(KeyCode.C) && bubbleCooldownTimer > bubbleCooldown)
         {
             // get a bubble from the pool
             // the bubble automatically positions itself and moves
             objectPooler.GetPooledObject("Bubble");
-            bubbleTimer = 0;
+            bubbleCooldownTimer = 0;
+        }
+    }
+
+    void CheckGrounded()
+    {
+        // check if we're on the ground
+        bool currentIsGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.4f, LayerMask.GetMask("Immovable"));
+
+        if (!isGrounded && currentIsGrounded)
+        {
+            anim.SetBool("Jump", false);
+        }
+
+        isGrounded = currentIsGrounded;
+    }
+
+    void CheckJump()
+    {
+        // Jump only w/ space key down + player is grounded
+        if (Input.GetKey(jumpKey) && isGrounded)
+        {
+            isJumping = true;
+            jumpTimer = 0f;
+
+            anim.SetBool("Walk", false);
+            anim.SetBool("Jump", true);
+        } else if (Input.GetKeyUp(jumpKey) || jumpTimer >= pressThreshold)
+        {
+            isJumping = false;
+        }
+
+        if (isJumping)
+        {
+            // Increase jump force gradually up to maxJumpForce
+            float jumpStrength = minJumpHeight; //Mathf.Lerp(minJumpHeight, maxJumpHeight, jumpTimer / pressThreshold);
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpStrength);
+            jumpTimer += Time.deltaTime;
         }
     }
 
@@ -164,5 +201,6 @@ public class PlayerMovement : MonoBehaviour
         {
             gameManager.GameOver();
         }
+
     }
 }

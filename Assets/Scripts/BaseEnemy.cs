@@ -15,17 +15,20 @@ public class BaseEnemy : MonoBehaviour
     protected float timer = 0;
     protected float direction = 1;
     private float gravityScale;
+    private Color originalColor;
 
     private void Awake()
     {
         an = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         sr = gameObject.GetComponent<SpriteRenderer>();
+
         DeathLayer = LayerMask.NameToLayer("Death Layer"); // a layer that does not collide with anything
         DefaultLayer = LayerMask.NameToLayer("Default");
         startPosition = gameObject.transform.position;
         gravityScale = rb.gravityScale;
         an.SetBool("isAlive", isAlive);
+        originalColor = sr.color;
     }
 
     // when an enemy is brought back from being dead, reset import variables
@@ -35,6 +38,7 @@ public class BaseEnemy : MonoBehaviour
         an.SetBool("isAlive", isAlive);
         gameObject.layer = DefaultLayer;
         rb.gravityScale = gravityScale;
+        sr.color = originalColor;
     }
 
     protected void DeathSequence()

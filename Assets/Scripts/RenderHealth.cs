@@ -15,7 +15,7 @@ public class RenderHealth : MonoBehaviour
     {
         playerHealth = player.GetComponent<PlayerHealth>();
         heartObjects = new List<GameObject>();
-        RenderSprites(30f, 25f);
+        RenderSprites(40f, 50f);
     }
 
     private void RenderSprites(float offset, float scale)

@@ -8,7 +8,6 @@ public class Bubble : MonoBehaviour
     public float range;
     public float persistTime;
     public float bobbingMaxSpeed;
-    public float bobbingSpeed;
     public float bobbingAccelerator;
     public GameObject player;
     public ObjectPooler objectPooler;
@@ -19,6 +18,7 @@ public class Bubble : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private Animator animator;
+    private float bobbingSpeed = 0;
 
     private int direction = 1;
     private float timer;
@@ -27,7 +27,6 @@ public class Bubble : MonoBehaviour
     private int DeathLayer;
     private int DefaultLayer;
     private float currentSpeed;
-    //private Sprite originalSprite;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
@@ -39,7 +38,6 @@ public class Bubble : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         DeathLayer = LayerMask.NameToLayer("Death Layer");
         DefaultLayer = LayerMask.NameToLayer("Default");
-        //originalSprite = spriteRenderer.sprite;
         originalColor = spriteRenderer.color;
     }
 
@@ -108,6 +106,7 @@ public class Bubble : MonoBehaviour
         }
     }
 
+    // reset a bubble that has been previously used for new usage
     public void resetBubble()
     {
         timer = 0;
@@ -123,7 +122,6 @@ public class Bubble : MonoBehaviour
         transform.position = new Vector3(player.transform.position.x + facingRight * offset, player.transform.position.y, transform.position.z);
         setDirection(facingRight);
 
-        //spriteRenderer.sprite = originalSprite;
         spriteRenderer.color = originalColor;
 
         bubbleSounds[bubbleSoundsIndex].Play();
@@ -132,6 +130,7 @@ public class Bubble : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        // when colliding with an enemy, move on top of the enemy and pop
         if (isAlive && collider.CompareTag("Enemy"))
         {
             transform.position = Vector3.MoveTowards(transform.position, collider.transform.position, 50 * Time.deltaTime);
